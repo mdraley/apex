@@ -1,0 +1,29 @@
+{
+  "name": "apex-idp",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "build-theme": "node scripts/figma-to-antd.mjs"
+  },
+    "dependencies": {
+    "antd": "^5.20.0",
+    "@ant-design/icons": "^5.4.0",
+    "@ant-design/pro-components": "^2.7.10",
+    "@ant-design/charts": "^2.2.16",
+    "dayjs": "^1.11.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.1",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.24"
+  }
+}

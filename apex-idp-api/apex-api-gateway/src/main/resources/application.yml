@@ -1,0 +1,267 @@
+spring:
+  application:
+    name: apex-api-gateway
+  
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:development}
+  
+  # Database configuration
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/apex_idp
+    username: ${DB_USERNAME:apex_user}
+    password: ${DB_PASSWORD:apex_password}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 30000
+  
+  # JPA configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Use Flyway for migrations
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 25
+        order_inserts: true
+        order_updates: true
+  
+  # Redis configuration for caching and sessions
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: 6379
+    password: ${REDIS_PASSWORD:}
+    timeout: 2000ms
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 5
+  
+  # Kafka configuration for event streaming
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      acks: all
+      retries: 3
+    consumer:
+      group-id: apex-idp-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.apex.*"
+  
+  # File upload configuration
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 200MB  # For batch uploads
+
+# Server Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+
+# MinIO configuration for document storage
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket-name: apex-documents
+  secure: false
+
+# JWT configuration
+apex:
+  jwt:
+    secret: ${JWT_SECRET:your-256-bit-secret-key-for-production-use-env-variable}
+    access-token-expiration: 15  # minutes
+    refresh-token-expiration: 10080  # 7 days in minutes
+
+# OCR service configuration
+ocr:
+  tesseract:
+    enabled: true
+    language: eng
+    dpi: 300
+  layoutlm:
+    enabled: true
+    model-path: ${LAYOUTLM_MODEL_PATH:/models/layoutlmv3}
+  confidence-threshold: 0.80
+
+# Integration endpoints
+integration:
+  cpsi:
+    enabled: ${CPSI_ENABLED:false}
+    endpoint: ${CPSI_ENDPOINT:}
+    api-key: ${CPSI_API_KEY:}
+  eclinicalworks:
+    enabled: ${ECW_ENABLED:false}
+    fhir-endpoint: ${ECW_FHIR_ENDPOINT:}
+    client-id: ${ECW_CLIENT_ID:}
+    client-secret: ${ECW_CLIENT_SECRET:}
+
+# Monitoring and metrics
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  health:
+    redis:
+      enabled: true
+    db:
+      enabled: true
+
+# Logging configuration
+logging:
+  level:
+    com.apex: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/apex-idp.log
+    min-response-size: 1024
+
+# Management/Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+  info:
+    env:
+      enabled: true
+
+# OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+  info:
+    title: Apex IDP Platform API
+    description: Intelligent Document Processing Platform for Healthcare
+    version: 1.0.0
+    contact:
+      name: Apex IDP Team
+      email: support@apex-idp.com
+
+# Custom Application Properties
+apex:
+  jwt:
+    secret: mySecretKey123456789012345678901234567890
+    expiration: 900  # 15 minutes
+    refresh-expiration: 604800  # 7 days
+  
+  storage:
+    type: local  # local, minio, s3
+    local:
+      base-path: ./data/uploads
+    minio:
+      endpoint: http://localhost:9000
+      access-key: minioadmin
+      secret-key: minioadmin
+      bucket-name: apex-documents
+  
+  processing:
+    max-file-size: 50MB
+    allowed-types: pdf,jpg,jpeg,png,tiff,doc,docx
+    ocr:
+      enabled: false  # Enable when OCR service is available
+      service-url: http://localhost:8081
+
+# Logging Configuration
+logging:
+  level:
+    com.apex: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/apex-idp.log
+    max-size: 10MB
+    max-history: 30
+
+---
+# Development Profile
+spring:
+  config:
+    activate:
+      on-profile: development
+  
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: 
+  
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  
+  h2:
+    console:
+      enabled: true
+
+apex:
+  storage:
+    type: local
+
+---
+# Docker Profile
+spring:
+  config:
+    activate:
+      on-profile: docker
+  
+  datasource:
+    url: jdbc:postgresql://postgres:5432/apex_idp
+    username: apex_user
+    password: apex_password
+
+apex:
+  storage:
+    type: minio
+    minio:
+      endpoint: http://minio:9000
+
+---
+# Production Profile
+spring:
+  config:
+    activate:
+      on-profile: prod
+  
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+logging:
+  level:
+    com.apex: INFO
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN

@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run Backend (Dev)",
+      "request": "launch",
+      "mainClass": "com.apex.apexidp.ApexIdpApplication",
+      "projectName": "apex-api",
+      "vmArgs": "-Dspring.profiles.active=dev"
+    },
+    {
+      "type": "java",
+      "name": "Debug Backend (Dev, 5005)",
+      "request": "launch",
+      "mainClass": "com.apex.apexidp.ApexIdpApplication",
+      "projectName": "apex-api",
+      "vmArgs": "-Dspring.profiles.active=dev -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+    },
+    {
+      "type": "java",
+      "name": "Run Backend (Prod)",
+      "request": "launch",
+      "mainClass": "com.apex.apexidp.ApexIdpApplication",
+      "projectName": "apex-api",
+      "vmArgs": "-Dspring.profiles.active=prod"
+    }
+  ]
+}

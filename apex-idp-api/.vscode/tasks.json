@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Backend: clean", "type": "shell", "command": "mvn -q clean", "options": { "cwd": "${workspaceFolder}" } },
+    { "label": "Backend: compile", "type": "shell", "command": "mvn -q clean compile", "options": { "cwd": "${workspaceFolder}" } },
+    { "label": "Backend: test", "type": "shell", "command": "mvn -q test", "options": { "cwd": "${workspaceFolder}" } },
+    { "label": "Backend: package (skip tests)", "type": "shell", "command": "mvn -q clean package -DskipTests", "options": { "cwd": "${workspaceFolder}" } },
+
+    {
+      "label": "Backend: dev",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+    {
+      "label": "Backend: prod",
+      "type": "shell",
+      "command": "mvn spring-boot:run -Dspring-boot.run.profiles=prod",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+
+    {
+      "label": "Backend: run JAR (prod)",
+      "type": "shell",
+      "command": "powershell -NoProfile -Command \"Get-ChildItem target -Filter *.jar | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName | ForEach-Object { Start-Process 'cmd' '/c java -jar `\"'+$_+'`\" --spring.profiles.active=prod' }\"",
+      "options": { "cwd": "${workspaceFolder}" },
+      "dependsOn": "Backend: package (skip tests)"
+    },
+
+    {
+      "label": "Backend: open Swagger",
+      "type": "shell",
+      "command": "powershell -NoProfile -Command \"Start-Process 'http://localhost:8080/api/swagger-ui/index.html'\"",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+    {
+      "label": "Backend: health check",
+      "type": "shell",
+      "command": "powershell -NoProfile -Command \"(Invoke-WebRequest -UseBasicParsing http://localhost:8080/actuator/health).Content\"",
+      "options": { "cwd": "${workspaceFolder}" },
+      "presentation": { "reveal": "never", "panel": "dedicated" }
+    }
+  ]
+}

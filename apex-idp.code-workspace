@@ -1,0 +1,31 @@
+{
+  "folders": [
+    { "name": "Frontend", "path": "apex-idp-app" },
+    { "name": "Backend", "path": "apex-idp-api" },
+    { "name": "github", "path": ".github" },
+    { "name": "docs", "path": "docs" },
+    { "name": "notes", "path": "notes" }
+  ],
+  "settings": {
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.defaultLocation": "editor",
+    "task.quickOpen.showInQuickPick": true,
+
+    // 👉 Set this to your actual JDK 17 home or delete this block if not needed
+    "java.configuration.runtimes": [
+      { "name": "JavaSE-17", "path": "C:\\Program Files\\Microsoft\\jdk-17.0.16.8-hotspot", "default": true }
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
+  },
+  "extensions": {
+    "recommendations": [
+      "github.copilot",
+      "github.copilot-chat",
+      "vscjava.vscode-java-pack",
+      "vscjava.vscode-maven",
+      "vmware.vscode-boot-dev-pack",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint"
+    ]
+  }
+}
