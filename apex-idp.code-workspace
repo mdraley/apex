@@ -1,10 +1,25 @@
 {
   // Apex IDP multi-root workspace
   "folders": [
-    { "name": "Frontend", "path": "apex-idp-app" },
-    { "name": "Backend", "path": "apex-idp-api" },
-    { "name": "docs", "path": "docs" },
-    { "name": "notes", "path": "notes" }
+    {
+      "name": "Frontend",
+      "path": "apex-idp-app"
+    },
+    {
+      "name": "Backend",
+      "path": "apex-idp-api"
+    },
+    {
+      "name": "docs",
+      "path": "docs"
+    },
+    {
+      "name": "notes",
+      "path": "notes"
+    },
+    {
+      "path": ".."
+    }
   ],
 
   "settings": {

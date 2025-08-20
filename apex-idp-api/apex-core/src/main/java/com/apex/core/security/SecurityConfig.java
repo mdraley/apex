@@ -51,7 +51,11 @@ public class SecurityConfig {
                 .requestMatchers("/v1/public/**").permitAll()
                 .requestMatchers("/v1/health/**").permitAll()
                 .requestMatchers("/actuator/**").permitAll()
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                // Swagger & OpenAPI (dev)
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/v3/api-docs.yaml").permitAll()
                 .requestMatchers("/ws/**").permitAll()  // WebSocket endpoints
                 
                 // Admin only endpoints

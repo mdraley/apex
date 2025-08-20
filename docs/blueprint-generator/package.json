@@ -1,0 +1,14 @@
+{
+  "name": "apex-tech-blueprint-generator",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Generates Technology_Stack_Blueprint.{md,json,yaml} from local manifests",
+  "scripts": {
+    "generate": "node index.mjs"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "xml2js": "^0.6.2"
+  }
+}

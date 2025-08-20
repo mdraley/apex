@@ -1,0 +1,376 @@
+configuration:
+  projectType: Auto-detect
+  depthLevel: Comprehensive
+  includeVersions: true
+  includeLicenses: true
+  includeDiagrams: true
+  includeUsagePatterns: true
+  includeConventions: true
+  outputFormat: Markdown
+  categorization: Layer
+versions:
+  springBoot: 3.4.5
+  springCloud: 2024.0.2
+  springdoc: 2.8.9
+  mapstruct: 1.5.5.Final
+  lombok: 1.18.32
+  react: ^18.3.1
+  vite: ^5.4.1
+  typescript: ^5.5.4
+modules:
+  - name: Apex Core
+    artifactId: apex-core
+    packaging: jar
+    dependencies:
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-web
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-data-jpa
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-security
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-validation
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-websocket
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-actuator
+        version: ''
+        scope: ''
+      - groupId: org.springframework.kafka
+        artifactId: spring-kafka
+        version: ''
+        scope: ''
+      - groupId: org.postgresql
+        artifactId: postgresql
+        version: ''
+        scope: runtime
+      - groupId: org.flywaydb
+        artifactId: flyway-core
+        version: ''
+        scope: ''
+      - groupId: io.jsonwebtoken
+        artifactId: jjwt-api
+        version: ''
+        scope: ''
+      - groupId: io.jsonwebtoken
+        artifactId: jjwt-impl
+        version: ''
+        scope: runtime
+      - groupId: io.jsonwebtoken
+        artifactId: jjwt-jackson
+        version: ''
+        scope: runtime
+      - groupId: org.springdoc
+        artifactId: springdoc-openapi-starter-webmvc-ui
+        version: ''
+        scope: ''
+      - groupId: org.projectlombok
+        artifactId: lombok
+        version: ''
+        scope: provided
+      - groupId: org.apache.commons
+        artifactId: commons-lang3
+        version: ''
+        scope: ''
+      - groupId: com.fasterxml.jackson.core
+        artifactId: jackson-core
+        version: ''
+        scope: ''
+      - groupId: com.fasterxml.jackson.core
+        artifactId: jackson-databind
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-test
+        version: ''
+        scope: test
+      - groupId: org.springframework.security
+        artifactId: spring-security-test
+        version: ''
+        scope: test
+      - groupId: org.testcontainers
+        artifactId: junit-jupiter
+        version: ''
+        scope: test
+      - groupId: org.testcontainers
+        artifactId: postgresql
+        version: ''
+        scope: test
+      - groupId: org.testcontainers
+        artifactId: kafka
+        version: ''
+        scope: test
+      - groupId: io.minio
+        artifactId: minio
+        version: ''
+        scope: ''
+  - name: Apex Vendor Management
+    artifactId: apex-vendor-management
+    packaging: jar
+    dependencies:
+      - groupId: com.apex
+        artifactId: apex-core
+        version: ${project.version}
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-web
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-data-jpa
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-validation
+        version: ''
+        scope: ''
+      - groupId: org.springdoc
+        artifactId: springdoc-openapi-starter-webmvc-ui
+        version: ''
+        scope: ''
+      - groupId: org.projectlombok
+        artifactId: lombok
+        version: ''
+        scope: ''
+      - groupId: org.postgresql
+        artifactId: postgresql
+        version: ''
+        scope: runtime
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-test
+        version: ''
+        scope: test
+      - groupId: org.testcontainers
+        artifactId: postgresql
+        version: ''
+        scope: test
+      - groupId: org.mapstruct
+        artifactId: mapstruct
+        version: ${mapstruct.version}
+        scope: ''
+      - groupId: org.mapstruct
+        artifactId: mapstruct-processor
+        version: ${mapstruct.version}
+        scope: provided
+  - name: Apex Document Processing
+    artifactId: apex-document-processing
+    packaging: jar
+    dependencies:
+      - groupId: com.apex
+        artifactId: apex-core
+        version: ${project.version}
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-web
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-data-jpa
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-websocket
+        version: ''
+        scope: ''
+      - groupId: org.apache.tika
+        artifactId: tika-core
+        version: 2.9.1
+        scope: ''
+      - groupId: org.apache.tika
+        artifactId: tika-parsers-standard-package
+        version: 2.9.1
+        scope: ''
+      - groupId: io.minio
+        artifactId: minio
+        version: 8.5.7
+        scope: ''
+      - groupId: org.springdoc
+        artifactId: springdoc-openapi-starter-webmvc-ui
+        version: ''
+        scope: ''
+      - groupId: org.projectlombok
+        artifactId: lombok
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-test
+        version: ''
+        scope: test
+  - name: Apex Financial Operations
+    artifactId: apex-financial-operations
+    packaging: jar
+    dependencies:
+      - groupId: com.apex
+        artifactId: apex-core
+        version: ${project.version}
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-web
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-data-jpa
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-validation
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-security
+        version: ''
+        scope: ''
+      - groupId: org.projectlombok
+        artifactId: lombok
+        version: ''
+        scope: ''
+  - name: Apex Contract Management
+    artifactId: apex-contract-management
+    packaging: jar
+    dependencies:
+      - groupId: com.apex
+        artifactId: apex-core
+        version: ${project.version}
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-web
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-data-jpa
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-validation
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-security
+        version: ''
+        scope: ''
+      - groupId: org.projectlombok
+        artifactId: lombok
+        version: ''
+        scope: ''
+  - name: Apex Integration
+    artifactId: apex-integration
+    packaging: jar
+    dependencies:
+      - groupId: com.apex
+        artifactId: apex-core
+        version: ${project.version}
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-web
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-webflux
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-data-jpa
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-validation
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-security
+        version: ''
+        scope: ''
+      - groupId: org.springframework.integration
+        artifactId: spring-integration-core
+        version: ''
+        scope: ''
+      - groupId: org.springframework.integration
+        artifactId: spring-integration-http
+        version: ''
+        scope: ''
+      - groupId: org.projectlombok
+        artifactId: lombok
+        version: ''
+        scope: ''
+  - name: Apex API Gateway
+    artifactId: apex-api-gateway
+    packaging: jar
+    dependencies:
+      - groupId: com.apex
+        artifactId: apex-core
+        version: ${project.version}
+        scope: ''
+      - groupId: com.apex
+        artifactId: apex-vendor-management
+        version: ${project.version}
+        scope: ''
+      - groupId: com.apex
+        artifactId: apex-document-processing
+        version: ${project.version}
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-web
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-data-jpa
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-security
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-websocket
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-actuator
+        version: ''
+        scope: ''
+      - groupId: org.postgresql
+        artifactId: postgresql
+        version: ''
+        scope: runtime
+      - groupId: com.h2database
+        artifactId: h2
+        version: ''
+        scope: runtime
+      - groupId: org.springdoc
+        artifactId: springdoc-openapi-starter-webmvc-ui
+        version: ''
+        scope: ''
+      - groupId: org.springframework.boot
+        artifactId: spring-boot-starter-test
+        version: ''
+        scope: test
+      - groupId: org.springframework.security
+        artifactId: spring-security-test
+        version: ''
+        scope: test
+      - groupId: org.testcontainers
+        artifactId: postgresql
+        version: ''
+        scope: test
+      - groupId: org.testcontainers
+        artifactId: junit-jupiter
+        version: ''
+        scope: test
+      - groupId: org.projectlombok
+        artifactId: lombok
+        version: ''
+        scope: ''
+endpoints:
+  health: /api/actuator/health
+  swaggerUI: /api/swagger-ui/index.html
+  openAPISpec: /api/v3/api-docs

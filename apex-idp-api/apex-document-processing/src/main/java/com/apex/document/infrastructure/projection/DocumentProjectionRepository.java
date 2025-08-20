@@ -29,7 +29,8 @@ public interface DocumentProjectionRepository extends JpaRepository<DocumentProj
     long countByUserIdAndStage(String userId, String stage);
     
     // Additional methods needed by services
-    long countByCreatedAtAfter(LocalDateTime dateTime);
+    // Use the actual field name from DocumentProjection (uploadedAt)
+    long countByUploadedAtAfter(LocalDateTime dateTime);
     
     @Query("SELECT AVG(dp.confidenceScore) FROM DocumentProjection dp WHERE dp.confidenceScore IS NOT NULL")
     Double calculateAverageConfidence();

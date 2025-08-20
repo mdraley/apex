@@ -96,7 +96,7 @@ public class DocumentQueryService {
         return ProcessingStatistics.builder()
             .totalDocuments(projectionRepository.count())
             .documentsProcessed(projectionRepository.countByStage(PENDING_REVIEW_STATUS))
-            .documentsInProgress(projectionRepository.countByCreatedAtAfter(java.time.LocalDate.now().atStartOfDay()))
+            .documentsInProgress(projectionRepository.countByUploadedAtAfter(java.time.LocalDate.now().atStartOfDay()))
             .averageProcessingTime(projectionRepository.calculateAverageConfidence() != null ? 
                 projectionRepository.calculateAverageConfidence() : 0.0)
             .successRate(0.95) // TODO: Calculate actual success rate

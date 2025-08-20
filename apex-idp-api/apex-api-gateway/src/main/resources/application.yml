@@ -19,23 +19,19 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate  # Use Flyway for migrations
-    properties:
-      hibernate:
-        jdbc:
-          batch_size: 25
-        order_inserts: true
-        order_updates: true
+    
   
-  # Redis configuration for caching and sessions
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: 6379
-    password: ${REDIS_PASSWORD:}
-    timeout: 2000ms
-    lettuce:
-      pool:
-        max-active: 10
-        max-idle: 5
+  # Redis configuration for caching and sessions (Spring Boot 3+)
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: 6379
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 5
   
   # Kafka configuration for event streaming
   kafka:
@@ -50,8 +46,7 @@ spring:
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: "com.apex.*"
+      
   
   # File upload configuration
   servlet:
@@ -68,38 +63,7 @@ server:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
 
-# MinIO configuration for document storage
-minio:
-  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
-  access-key: ${MINIO_ACCESS_KEY:minioadmin}
-  secret-key: ${MINIO_SECRET_KEY:minioadmin}
-  bucket-name: apex-documents
-  secure: false
-
-# JWT configuration (moved to consolidated 'apex' section below)
-
-# OCR service configuration
-ocr:
-  tesseract:
-    enabled: true
-    language: eng
-    dpi: 300
-  layoutlm:
-    enabled: true
-    model-path: ${LAYOUTLM_MODEL_PATH:/models/layoutlmv3}
-  confidence-threshold: 0.80
-
-# Integration endpoints
-integration:
-  cpsi:
-    enabled: ${CPSI_ENABLED:false}
-    endpoint: ${CPSI_ENDPOINT:}
-    api-key: ${CPSI_API_KEY:}
-  eclinicalworks:
-    enabled: ${ECW_ENABLED:false}
-    fhir-endpoint: ${ECW_FHIR_ENDPOINT:}
-    client-id: ${ECW_CLIENT_ID:}
-    client-secret: ${ECW_CLIENT_SECRET:}
+## MinIO, OCR, and Integration configs are consolidated under apex.* below
 
 # Monitoring and metrics
 management:
@@ -126,11 +90,18 @@ management:
 # Logging configuration
 logging:
   level:
-    "com.apex": DEBUG
-    "org.springframework.security": DEBUG
-    "org.springframework.web": INFO
-    "org.hibernate.SQL": DEBUG
-    "org.hibernate.type.descriptor.sql.BasicBinder": TRACE
+    com:
+      apex: DEBUG
+    org:
+      springframework:
+        security: DEBUG
+        web: INFO
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
@@ -241,7 +212,14 @@ spring:
 
 logging:
   level:
-    "org.springframework.security": WARN
-    "org.hibernate.SQL": WARN
-    "org.hibernate.type.descriptor.sql.BasicBinder": WARN
-    "com.apex": INFO
+    org:
+      springframework:
+        security: WARN
+      hibernate:
+        SQL: WARN
+        type:
+          descriptor:
+            sql:
+              BasicBinder: WARN
+    com:
+      apex: INFO
