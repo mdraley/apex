@@ -23,6 +23,7 @@ import java.util.UUID;
 public class VendorService {
     
     private final VendorRepository vendorRepository;
+    private final VendorMapper vendorMapper;
     
     /**
      * Creates a new vendor
@@ -36,25 +37,16 @@ public class VendorService {
                     throw new IllegalArgumentException("Vendor with tax ID " + command.getTaxId() + " already exists");
                 });
         
-        Vendor vendor = new Vendor(
-                command.getName(),
-                command.getTaxId(),
-                command.getEmail(),
-                command.getType()
-        );
-        
-        if (command.getAddress() != null) {
-            vendor.setAddress(command.getAddress());
-        }
-        if (command.getPhone() != null) {
-            vendor.setPhone(command.getPhone());
-        }
-        if (command.getPaymentTermsDays() != null) {
-            vendor.setPaymentTermsDays(command.getPaymentTermsDays());
-        }
-        if (command.getNotes() != null) {
-            vendor.setNotes(command.getNotes());
-        }
+    Vendor vendor = new Vendor(
+        command.getName(),
+        command.getTaxId(),
+        command.getEmail(),
+        command.getType()
+    );
+    vendor.setAddress(command.getAddress());
+    vendor.setPhone(command.getPhone());
+    vendor.setPaymentTermsDays(command.getPaymentTermsDays());
+    vendor.setNotes(command.getNotes());
         
         Vendor savedVendor = vendorRepository.save(vendor);
         log.info("Created vendor with ID: {}", savedVendor.getId());
@@ -69,15 +61,7 @@ public class VendorService {
         
         Vendor vendor = findVendorById(vendorId);
         
-        if (command.getName() != null) {
-            vendor.setName(command.getName());
-        }
-        if (command.getPaymentTermsDays() != null) {
-            vendor.setPaymentTermsDays(command.getPaymentTermsDays());
-        }
-        if (command.getNotes() != null) {
-            vendor.setNotes(command.getNotes());
-        }
+    vendorMapper.updateVendorFromCommand(command, vendor);
         
         vendor.updateEntity();
         return vendorRepository.save(vendor);

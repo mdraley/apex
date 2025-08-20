@@ -1,42 +1,62 @@
 {
   "version": "2.0.0",
   "tasks": [
-    { "label": "Backend: clean", "type": "shell", "command": "mvn -q clean", "options": { "cwd": "${workspaceFolder}" } },
-    { "label": "Backend: compile", "type": "shell", "command": "mvn -q clean compile", "options": { "cwd": "${workspaceFolder}" } },
-    { "label": "Backend: test", "type": "shell", "command": "mvn -q test", "options": { "cwd": "${workspaceFolder}" } },
-    { "label": "Backend: package (skip tests)", "type": "shell", "command": "mvn -q clean package -DskipTests", "options": { "cwd": "${workspaceFolder}" } },
-
     {
-      "label": "Backend: dev",
+      "label": "Gateway: clean",
       "type": "shell",
-      "command": "mvn spring-boot:run",
+      "command": "mvn -q -pl apex-api-gateway -am clean",
       "options": { "cwd": "${workspaceFolder}" }
     },
     {
-      "label": "Backend: prod",
+      "label": "Gateway: compile",
       "type": "shell",
-      "command": "mvn spring-boot:run -Dspring-boot.run.profiles=prod",
+      "command": "mvn -q -pl apex-api-gateway -am clean compile",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+    {
+      "label": "Gateway: test",
+      "type": "shell",
+      "command": "mvn -q -pl apex-api-gateway -am test",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+    {
+      "label": "Gateway: package (skip tests)",
+      "type": "shell",
+      "command": "mvn -q -pl apex-api-gateway -am clean package -DskipTests",
       "options": { "cwd": "${workspaceFolder}" }
     },
 
     {
-      "label": "Backend: run JAR (prod)",
+      "label": "Gateway: spring-boot:run (dev)",
       "type": "shell",
-      "command": "powershell -NoProfile -Command \"Get-ChildItem target -Filter *.jar | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName | ForEach-Object { Start-Process 'cmd' '/c java -jar `\"'+$_+'`\" --spring.profiles.active=prod' }\"",
+      "command": "mvn -q -pl apex-api-gateway -am spring-boot:run -Dspring-boot.run.profiles=dev",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+    {
+      "label": "Gateway: spring-boot:run (prod)",
+      "type": "shell",
+      "command": "mvn -q -pl apex-api-gateway -am spring-boot:run -Dspring-boot.run.profiles=prod",
+      "options": { "cwd": "${workspaceFolder}" }
+    },
+
+    {
+      "label": "Gateway: run JAR (prod)",
+      "type": "shell",
+      "command": "powershell -NoProfile -Command \"$m='apex-api-gateway'; Get-ChildItem \"$m/target\" -Filter *.jar | Sort-Object LastWriteTime -Descending | Select-Object -First 1 | ForEach-Object { java -jar $_.FullName }\"",
       "options": { "cwd": "${workspaceFolder}" },
-      "dependsOn": "Backend: package (skip tests)"
+      "dependsOn": "Gateway: package (skip tests)"
     },
 
     {
-      "label": "Backend: open Swagger",
+      "label": "Gateway: open Swagger",
       "type": "shell",
       "command": "powershell -NoProfile -Command \"Start-Process 'http://localhost:8080/api/swagger-ui/index.html'\"",
       "options": { "cwd": "${workspaceFolder}" }
     },
     {
-      "label": "Backend: health check",
+      "label": "Gateway: health check",
       "type": "shell",
-      "command": "powershell -NoProfile -Command \"(Invoke-WebRequest -UseBasicParsing http://localhost:8080/actuator/health).Content\"",
+      "command": "powershell -NoProfile -Command \"Invoke-WebRequest -UseBasicParsing http://localhost:8080/actuator/health | Select-Object -ExpandProperty StatusCode\"",
       "options": { "cwd": "${workspaceFolder}" },
       "presentation": { "reveal": "never", "panel": "dedicated" }
     }

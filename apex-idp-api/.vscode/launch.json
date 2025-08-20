@@ -2,28 +2,42 @@
   "version": "0.2.0",
   "configurations": [
     {
+      // Run Spring Boot (dev)
       "type": "java",
-      "name": "Run Backend (Dev)",
+      "name": "Run Gateway (Dev)",
       "request": "launch",
       "mainClass": "com.apex.apexidp.ApexIdpApplication",
-      "projectName": "apex-api",
-      "vmArgs": "-Dspring.profiles.active=dev"
+      "projectName": "apex-api-gateway",
+      "vmArgs": "-Dspring.profiles.active=dev",
+      "cwd": "${workspaceFolder}/apex-api-gateway"
     },
     {
+      // Debug with JDWP on 5005
       "type": "java",
-      "name": "Debug Backend (Dev, 5005)",
+      "name": "Debug Gateway (Dev, 5005)",
       "request": "launch",
       "mainClass": "com.apex.apexidp.ApexIdpApplication",
-      "projectName": "apex-api",
-      "vmArgs": "-Dspring.profiles.active=dev -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+      "projectName": "apex-api-gateway",
+      "vmArgs": "-Dspring.profiles.active=dev -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
+      "cwd": "${workspaceFolder}/apex-api-gateway"
     },
     {
+      // Attach if the app was started by a task with debug enabled
       "type": "java",
-      "name": "Run Backend (Prod)",
+      "name": "Attach to 5005",
+      "request": "attach",
+      "hostName": "localhost",
+      "port": 5005
+    },
+    {
+      // Run with prod profile
+      "type": "java",
+      "name": "Run Gateway (Prod)",
       "request": "launch",
       "mainClass": "com.apex.apexidp.ApexIdpApplication",
-      "projectName": "apex-api",
-      "vmArgs": "-Dspring.profiles.active=prod"
+      "projectName": "apex-api-gateway",
+      "vmArgs": "-Dspring.profiles.active=prod",
+      "cwd": "${workspaceFolder}/apex-api-gateway"
     }
   ]
 }

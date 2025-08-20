@@ -1,22 +1,50 @@
 {
+  // Apex IDP multi-root workspace
   "folders": [
     { "name": "Frontend", "path": "apex-idp-app" },
     { "name": "Backend", "path": "apex-idp-api" },
-    { "name": "github", "path": ".github" },
     { "name": "docs", "path": "docs" },
     { "name": "notes", "path": "notes" }
   ],
+
   "settings": {
-    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    // Terminals open in the Backend folder by default
+    "terminal.integrated.cwd": "${workspaceFolder:Backend}",
+
+    // Use PowerShell and spawn terminals from the active editor when possible
+    "terminal.integrated.defaultProfile.windows": "Backend (apex-idp-api)",
     "terminal.integrated.defaultLocation": "editor",
+
+    // Quick profiles to jump between Frontend/Backend terminals
+    "terminal.integrated.profiles.windows": {
+      "Backend (apex-idp-api)": {
+        "path": "pwsh.exe",
+        "args": [],
+        "cwd": "${workspaceFolder:Backend}"
+      },
+      "Frontend (apex-idp-app)": {
+        "path": "pwsh.exe",
+        "args": [],
+        "cwd": "${workspaceFolder:Frontend}"
+      }
+    },
+
+    // Tasks palette quality-of-life
     "task.quickOpen.showInQuickPick": true,
 
-    // 👉 Set this to your actual JDK 17 home or delete this block if not needed
+    // Java / Maven
+    // 👉 Update this to your actual JDK 17 path or remove if you manage JDKs elsewhere
     "java.configuration.runtimes": [
-      { "name": "JavaSE-17", "path": "C:\\Program Files\\Microsoft\\jdk-17.0.16.8-hotspot", "default": true }
+      {
+        "name": "JavaSE-17",
+        "path": "C:\\Program Files\\Microsoft\\jdk-17.0.16.8-hotspot",
+        "default": true
+      }
     ],
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.compile.nullAnalysis.mode": "automatic"
   },
+
   "extensions": {
     "recommendations": [
       "github.copilot",

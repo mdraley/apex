@@ -2,11 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Frontend (Chrome)",
+      "name": "Run Frontend (Dev) – Chrome",
       "type": "pwa-chrome",
       "request": "launch",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Frontend: dev",
+      "postDebugTask": "Frontend: stop dev",
+      "sourceMaps": true
     }
   ]
 }

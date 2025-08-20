@@ -1,6 +1,4 @@
 package com.apex.gateway.controller;
-
-import com.apex.core.security.UserPrincipal;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,10 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import java.security.Principal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Health and System Information Controller
@@ -70,11 +68,11 @@ public class HealthController {
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/info")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> getSystemInfo(
+        public ResponseEntity<Map<String, Object>> getSystemInfo(
             @Parameter(description = "Current authenticated user")
-            @AuthenticationPrincipal UserPrincipal user) {
-        
-        log.info("System info requested by admin user: {}", user.getUsername());
+                        @AuthenticationPrincipal Principal user) {
+                String username = (user != null) ? user.getName() : "anonymous";
+                log.info("System info requested by admin user: {}", username);
         
         Map<String, Object> info = Map.of(
                 "application", Map.of(

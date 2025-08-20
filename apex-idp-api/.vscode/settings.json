@@ -1,4 +1,17 @@
 {
+  // Open terminals rooted at the Backend parent
   "terminal.integrated.cwd": "${workspaceFolder}",
-  "java.compile.nullAnalysis.mode": "automatic"
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+
+  // Java tooling
+  "java.compile.nullAnalysis.mode": "automatic",
+  "java.configuration.updateBuildConfiguration": "interactive",
+
+  // Hide build output clutter
+  "files.exclude": {
+    "**/target": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true
+  }
 }

@@ -21,7 +21,6 @@ spring:
       ddl-auto: validate  # Use Flyway for migrations
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc:
           batch_size: 25
         order_inserts: true
@@ -77,12 +76,7 @@ minio:
   bucket-name: apex-documents
   secure: false
 
-# JWT configuration
-apex:
-  jwt:
-    secret: ${JWT_SECRET:your-256-bit-secret-key-for-production-use-env-variable}
-    access-token-expiration: 15  # minutes
-    refresh-token-expiration: 10080  # 7 days in minutes
+# JWT configuration (moved to consolidated 'apex' section below)
 
 # OCR service configuration
 ocr:
@@ -113,41 +107,41 @@ management:
     web:
       exposure:
         include: health,info,metrics,prometheus
-  metrics:
-    export:
-      prometheus:
+  endpoint:
+    health:
+      show-details: when-authorized
+  prometheus:
+    metrics:
+      export:
         enabled: true
   health:
     redis:
       enabled: true
     db:
       enabled: true
+  info:
+    env:
+      enabled: true
 
 # Logging configuration
 logging:
   level:
-    com.apex: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.web: INFO
+    "com.apex": DEBUG
+    "org.springframework.security": DEBUG
+    "org.springframework.web": INFO
+    "org.hibernate.SQL": DEBUG
+    "org.hibernate.type.descriptor.sql.BasicBinder": TRACE
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
   file:
     name: logs/apex-idp.log
-    min-response-size: 1024
+  logback:
+    rollingpolicy:
+      max-file-size: 10MB
+      max-history: 30
 
-# Management/Actuator
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
-  endpoint:
-    health:
-      show-details: when-authorized
-  info:
-    env:
-      enabled: true
+# (Merged into the single management section above)
 
 # OpenAPI Configuration
 springdoc:
@@ -156,21 +150,17 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
-  info:
-    title: Apex IDP Platform API
-    description: Intelligent Document Processing Platform for Healthcare
-    version: 1.0.0
-    contact:
-      name: Apex IDP Team
-      email: support@apex-idp.com
 
-# Custom Application Properties
+# Custom Application Properties (merged)
 apex:
   jwt:
-    secret: mySecretKey123456789012345678901234567890
-    expiration: 900  # 15 minutes
-    refresh-expiration: 604800  # 7 days
-  
+    secret: ${JWT_SECRET:your-256-bit-secret-key-for-production-use-env-variable}
+    # Both naming conventions provided for compatibility
+    access-token-expiration: 15         # minutes
+    refresh-token-expiration: 10080     # 7 days in minutes
+    expiration: 900                     # 15 minutes (legacy)
+    refresh-expiration: 604800          # 7 days (legacy)
+
   storage:
     type: local  # local, minio, s3
     local:
@@ -180,28 +170,15 @@ apex:
       access-key: minioadmin
       secret-key: minioadmin
       bucket-name: apex-documents
-  
+
   processing:
-    max-file-size: 50MB
+    max-file-size: 52428800
     allowed-types: pdf,jpg,jpeg,png,tiff,doc,docx
     ocr:
       enabled: false  # Enable when OCR service is available
       service-url: http://localhost:8081
 
-# Logging Configuration
-logging:
-  level:
-    com.apex: DEBUG
-    org.springframework.security: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file:
-    name: logs/apex-idp.log
-    max-size: 10MB
-    max-history: 30
+# (Logging consolidated above)
 
 ---
 # Development Profile
@@ -220,6 +197,9 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
   
   h2:
     console:
@@ -261,7 +241,7 @@ spring:
 
 logging:
   level:
-    com.apex: INFO
-    org.springframework.security: WARN
-    org.hibernate.SQL: WARN
-    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+    "org.springframework.security": WARN
+    "org.hibernate.SQL": WARN
+    "org.hibernate.type.descriptor.sql.BasicBinder": WARN
+    "com.apex": INFO
